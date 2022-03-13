@@ -3,7 +3,7 @@ from rullgardin import *
 from sshkeyboard import listen_keyboard
 import sys
 
-gardin = gardiner()[int(sys.argv[1])]
+gardin = gardiner()[int(sys.argv[1]) - 1]
 
 def press(key):
     if key == "up":

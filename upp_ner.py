@@ -27,12 +27,12 @@ def ner():
 
 def main():
     riktning = sys.argv[1]
-    if len(sys.argv) == 1:
+    if len(sys.argv) == 2:
         if riktning == "ner":
             ner()
         elif riktning == "upp":
             upp()
-    elif len(sys.argv) > 1:
+    elif len(sys.argv) > 2:
         gardin = gardiner()[int(sys.argv[2]) - 1]
         if riktning == "ner":
             ner_thread(gardin)

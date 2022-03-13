@@ -1,7 +1,7 @@
 from gpiozero import LED, Button
 from time import time, sleep
 
-data_path = "/home/pi/Programs/Rullgardin/data/"
+logg_path = "/home/pi/Programs/Rullgardin/logg/"
 
 class Rullgardin:
     def __init__(self, a1, a2, en, knapp, tid, index):
@@ -28,7 +28,7 @@ class Rullgardin:
         self.en.on()
 
     def read_log(self):
-        file = open(data_path + "logg" + self.index + ".txt", encoding="utf8")
+        file = open(logg_path + "logg" + self.index + ".txt", encoding="utf8")
         file_rader = file.readlines()
         ny_fil = []
         for rad in file_rader:
@@ -36,11 +36,11 @@ class Rullgardin:
         return float(ny_fil[-1])
 
     def log(self, tid):
-        with open(data_path + "logg" + self.index + ".txt", "w") as f:
+        with open(logg_path + "logg" + self.index + ".txt", "w") as f:
             f.write(tid + "\n")
 
     def clear_log(self):
-        open(data_path + "logg" + self.index + ".txt", "w").close()
+        open(logg_path + "logg" + self.index + ".txt", "w").close()
 
     def ner_logger(self):
         gammal_tid = self.read_log()
@@ -64,7 +64,7 @@ class Rullgardin:
         self.log('0')
 
 def gardiner():
-    file = open(data_path + "gardiner.txt", encoding="utf8")
+    file = open(logg_path + "gardiner.txt", encoding="utf8")
     file_rader = file.readlines()
     rullgardiner = []
     for rad in file_rader:

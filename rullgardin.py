@@ -1,5 +1,7 @@
 from gpiozero import LED, Button
-import time
+from time import time, sleep
+
+data_path = "/home/pi/Programs/Rullgardin/data/"
 
 class Rullgardin:
     def __init__(self, a1, a2, en, knapp, tid, index):
@@ -25,31 +27,49 @@ class Rullgardin:
         self.a1.on()
         self.en.on()
 
-class Logg:
-    def read(gardin):
-        file = open('/home/pi/Programs/Rullgardin/rullgardin/logg' + gardin.index + '.txt', encoding="utf8")
+    def read_log(self):
+        file = open(data_path + "logg" + self.index + ".txt", encoding="utf8")
         file_rader = file.readlines()
         ny_fil = []
         for rad in file_rader:
             ny_fil.append(rad.rstrip("\n"))
         return float(ny_fil[-1])
 
-    def skriv(tid, gardin):
-        with open('/home/pi/Programs/Rullgardin/rullgardin/logg' + gardin.index + '.txt', 'w') as f:
-            f.write(tid)
-            f.write('\n')
+    def log(self, tid):
+        with open(data_path + "logg" + self.index + ".txt", "w") as f:
+            f.write(tid + "\n")
 
-    def clear(gardin):
-        open('/home/pi/Programs/Rullgardin/rullgardin/logg' + gardin.index + '.txt', 'w').close()
+    def clear_log(self):
+        open(data_path + "logg" + self.index + ".txt", "w").close()
+
+    def ner_logger(self):
+        gammal_tid = self.read_log()
+        start = time()
+        while True:
+            self.log(str(time() - start))
+            sleep(0.1)
+            if time() - start + gammal_tid > self.tid:
+                self.clear_log()
+                self.log(str(self.tid))
+                break
+
+    def upp_logger(self):
+        gammal_tid = self.read_log()
+        start = time()
+        while self.knapp.value != 1:
+            self.log(str(gammal_tid - (time() - start) * 0.87))
+            if time() - start > 24:
+                self.off()
+        self.clear_log()
+        self.log('0')
 
 def gardiner():
-    file = open('/home/pi/Programs/Rullgardin/rullgardin/gardiner.txt', encoding="utf8")
+    file = open(data_path + "gardiner.txt", encoding="utf8")
     file_rader = file.readlines()
     rullgardiner = []
     for rad in file_rader:
         rullgardiner.append(rad.rstrip("\n"))
     rullgardiner.pop(0)
-
     gardiner = []
     for gardin in rullgardiner:
         pinnar = gardin.split()
@@ -59,7 +79,6 @@ def gardiner():
         en = pinnar[2]
         knapp = pinnar[3]
         tid = float(pinnar[4])
-        print(index, en, a1, a2, knapp, tid)
         gardiner.append(Rullgardin(a1, a2, en, knapp, tid, index))
     return gardiner
 

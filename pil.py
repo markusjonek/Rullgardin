@@ -1,9 +1,9 @@
 
 from rullgardin import *
 from sshkeyboard import listen_keyboard
-import time
+import sys
 
-gardin = gardiner()[0]
+gardin = gardiner()[int(sys.argv[1])]
 
 def press(key):
     if key == "up":

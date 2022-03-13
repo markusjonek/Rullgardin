@@ -1,5 +1,4 @@
-from rullgardin import Rullgardin, Logg, gardiner 
-from upp import upp
+from upp_ner import upp
 from time import localtime, sleep
 import sys
 

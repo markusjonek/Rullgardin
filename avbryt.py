@@ -1,8 +1,8 @@
-from rullgardin import Rullgardin
+from rullgardin import gardiner
 import os
 
-Rullgardin(4, 22, 17, 26).off()
+for gardin in gardiner():
+    gardin.off()
 
 os.system("pkill -9 -f klocka.py")
-os.system("pkill -9 -f ner.py")
-os.system("pkill -9 -f upp.py")
+os.system("pkill -9 -f upp_ner.py")

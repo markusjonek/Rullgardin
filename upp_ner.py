@@ -33,7 +33,7 @@ def main():
         elif riktning == "upp":
             upp()
     elif len(sys.argv) > 1:
-        gardin = gardiner()[int(sys.argv[2])]
+        gardin = gardiner()[int(sys.argv[2]) - 1]
         if riktning == "ner":
             ner_thread(gardin)
         elif riktning == "upp":

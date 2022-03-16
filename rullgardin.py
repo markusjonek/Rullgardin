@@ -1,5 +1,6 @@
 from gpiozero import LED, Button
 from time import time, sleep
+import os
 
 logg_path = "/home/pi/Programs/Rullgardin/logg/"
 
@@ -28,16 +29,19 @@ class Rullgardin:
         self.en.on()
 
     def read_log(self):
-        file = open(logg_path + "logg" + self.index + ".txt", encoding="utf8")
-        file_rader = file.readlines()
-        ny_fil = []
-        for rad in file_rader:
-            ny_fil.append(rad.rstrip("\n"))
-        return float(ny_fil[-1])
+        fil = open(logg_path + "logg" + self.index + ".txt", encoding="utf8")
+        fil_rader = fil.readlines()
+        for index, rad in enumerate(fil_rader):
+            fil_rader[index] = rad.rstrip("\n")
+        if len(fil_rader) < 1:
+            print("error i logging för gardin: " + self.index)
+            return 0
+        return float(fil_rader[-1])
 
     def log(self, tid):
-        with open(logg_path + "logg" + self.index + ".txt", "w") as f:
-            f.write(tid + "\n")
+        with open(logg_path + "logg" + self.index + ".txt", "a") as f:
+            f.write(tid)
+            f.write("\n")
 
     def clear_log(self):
         open(logg_path + "logg" + self.index + ".txt", "w").close()
@@ -46,22 +50,31 @@ class Rullgardin:
         gammal_tid = self.read_log()
         start = time()
         while True:
-            self.log(str(time() - start))
-            sleep(0.1)
-            if time() - start + gammal_tid > self.tid:
-                self.clear_log()
-                self.log(str(self.tid))
+            try:
+                self.log(str(time() - start))
+                sleep(0.1)
+                if time() - start + gammal_tid > self.tid:
+                    self.clear_log()
+                    self.log(str(self.tid))
+                    break
+            except KeyboardInterrupt:
+                print("Avbryter")
                 break
 
     def upp_logger(self):
         gammal_tid = self.read_log()
         start = time()
         while self.knapp.value != 1:
-            self.log(str(gammal_tid - (time() - start) * 0.87))
-            if time() - start > 24:
-                self.off()
-        self.clear_log()
-        self.log('0')
+            try:
+                self.log(str(gammal_tid - (time() - start) * 0.87))
+                if time() - start > 24:
+                    self.off()
+                    self.clear_log()
+                    self.log("0")
+                    break
+            except KeyboardInterrupt:
+                print("Avbryter")
+                break
 
 def gardiner():
     file = open(logg_path + "gardiner.txt", encoding="utf8")

@@ -1,11 +1,18 @@
-from upp_ner import upp
+from run import upp
 from time import localtime, sleep
 import sys
 
 def klocka():
-    klockslag = [int(sys.argv[1]), int(sys.argv[2])]
+    if ":" in sys.argv[1]:
+        klockslag = sys.argv[1].split(":")
+    else:
+        klockslag = [sys.argv[1], sys.argv[2]]
+    if klockslag[0][0] == "0":
+        klockslag[0] = klockslag[0][1]
+    if klockslag[1][0] == "0":
+        klockslag[1] = klockslag[1][1]
     while True:
-        if localtime().tm_hour == klockslag[0] and localtime().tm_min == klockslag[1]:
+        if localtime().tm_hour == int(klockslag[0]) and localtime().tm_min == int(klockslag[1]):
             upp()
             break
         sleep(10)

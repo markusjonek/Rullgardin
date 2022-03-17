@@ -2,7 +2,7 @@ from gpiozero import LED, Button
 from time import time, sleep
 import os
 
-logg_path = "/home/pi/Programs/Rullgardin/logg/"
+logg_path = "/home/pi/Rullgardin/logg/"
 
 class Rullgardin:
     def __init__(self, a1, a2, en, knapp, tid, index):
@@ -65,16 +65,14 @@ class Rullgardin:
         gammal_tid = self.read_log()
         start = time()
         while self.knapp.value != 1:
-            try:
-                self.log(str(gammal_tid - (time() - start) * 0.87))
-                if time() - start > 24:
-                    self.off()
-                    self.clear_log()
-                    self.log("0")
-                    break
-            except KeyboardInterrupt:
-                print("Avbryter")
+            self.log(str(gammal_tid - (time() - start) * 0.87))
+            if time() - start > 24:
+                self.off()
+                self.clear_log()
+                self.log("0")
                 break
+        self.clear_log()
+        self.log("0")
 
 def gardiner():
     file = open(logg_path + "gardiner.txt", encoding="utf8")

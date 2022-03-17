@@ -5,6 +5,8 @@ import sys
 
 def upp_thread(gardin):
     gardin.upp()
+    #gardin.knapp.wait_for_press()
+    #gardin.knapp.when_pressed = gardin.off
     gardin.upp_logger()
     gardin.off()
     sleep(0.1)

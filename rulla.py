@@ -5,9 +5,9 @@ import sys
 
 def upp_thread(gardin):
     gardin.upp()
-    #gardin.knapp.wait_for_press()
+    gardin.knapp.wait_for_press()
     #gardin.knapp.when_pressed = gardin.off
-    gardin.upp_logger()
+    #gardin.upp_logger()
     gardin.off()
     sleep(0.1)
     gardin.ner()
@@ -16,7 +16,8 @@ def upp_thread(gardin):
 
 def ner_thread(gardin):
     gardin.ner()
-    gardin.ner_logger()
+    sleep(gardin.tid)
+    #gardin.ner_logger()
     gardin.off()
 
 def upp():

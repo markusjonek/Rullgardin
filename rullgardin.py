@@ -2,8 +2,6 @@ from gpiozero import LED, Button
 from time import time, sleep
 import os
 
-logg_path = "/home/pi/Rullgardin/logg/"
-
 class Rullgardin:
     def __init__(self, a1, a2, en, knapp, tid, index):
         self.a1 = LED(a1)
